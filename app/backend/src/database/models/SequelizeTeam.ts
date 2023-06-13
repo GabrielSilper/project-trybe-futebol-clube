@@ -8,8 +8,8 @@ import {
 import sequelize from '.';
 
 class SequelizeTeam extends Model<
-  InferAttributes<SequelizeTeam>,
-  InferCreationAttributes<SequelizeTeam>
+InferAttributes<SequelizeTeam>,
+InferCreationAttributes<SequelizeTeam>
 > {
   declare id: CreationOptional<number>;
   declare teamName: string;
@@ -25,10 +25,10 @@ SequelizeTeam.init({
   teamName: {
     type: DataTypes.STRING(50),
     allowNull: false,
-  }
+  },
 }, {
-    sequelize: sequelize,
-    modelName: 'teams',
-    timestamps: false,
-    underscored: true,
+  sequelize,
+  modelName: 'teams',
+  timestamps: false,
+  underscored: true,
 });
