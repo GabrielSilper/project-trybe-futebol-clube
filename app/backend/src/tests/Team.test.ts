@@ -28,10 +28,10 @@ describe('Team test', () => {
     it('returns an error message: "Book with id (?) not found."', async () => {
       sinon.stub(SequelizeTeam, 'findByPk').resolves(null);
 
-      const { status, body } = await chai.request(app).get('/teams/:1000');
+      const { status, body } = await chai.request(app).get('/teams/1000');
 
       expect(status).to.be.equal(NOT_FOUND);
-      expect(body).to.be.deep.equal({ message: 'Book with id 1000 not found.'});
+      expect(body.message).to.be.equal('Book with id 1000 not found.');
     });
 
     it('returns a book correctly', async () => {
