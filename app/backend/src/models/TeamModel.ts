@@ -9,4 +9,12 @@ export default class TeamModel implements IModel<ITeam> {
     const data = await this.model.findAll();
     return data.map(({ id, teamName }) => ({ id, teamName }));
   }
+
+  async findById(id: number): Promise<ITeam | null> {
+    const data = await this.model.findByPk(id);
+    if (data) {
+      return { ...data.dataValues };
+    }
+    return data;
+  }
 }
