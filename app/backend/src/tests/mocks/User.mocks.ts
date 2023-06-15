@@ -13,4 +13,13 @@ const loginUser1 = {
     password: 'secret_admin'
 }
 
-export { user1, loginUser1 }
+const loginWithoutEmail = {
+    password: 'secret_admin'
+}
+
+const loginNoLength = {
+    email: 'admin@admin.com',
+    password: 'secre'
+}
+
+export { user1, loginUser1, loginWithoutEmail, loginNoLength }
