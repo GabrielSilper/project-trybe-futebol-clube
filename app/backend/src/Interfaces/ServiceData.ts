@@ -1,4 +1,4 @@
-export type TypeError = 'NOT_FOUND';
+export type TypeError = 'NOT_FOUND' | 'UNAUTHORIZED';
 
 export type Message = { message: string };
 
