@@ -9,9 +9,16 @@ const user1: IUser = {
   password: '$2a$08$xi.Hxk1czAO0nZR..B393u10aED0RQ1N3PAEXQ7HxtLjKPEZBu.PW',
 };
 
+const userPartial: Partial<IUser> = {
+  id: 1,
+  username: 'Admin',
+  role: 'admin',
+  email: 'admin@admin.com',
+};
+
 const loginUser1: Login = {
   email: 'admin@admin.com',
-  password: "secret_admin",
+  password: 'secret_admin',
 };
 
 const loginWrongPassword = {
@@ -38,6 +45,9 @@ const loginNoLength = {
   password: 'secre',
 };
 
+const validToken =
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwidXNlcm5hbWUiOiJBZG1pbiIsImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjg2OTMzNjM0fQ.CXTMK1h2Oqe3hdwD7UETW6DY25a-IHJo-u3EPRABs-k';
+
 export {
   user1,
   loginUser1,
@@ -45,5 +55,7 @@ export {
   loginEmailInvalid,
   loginNoLength,
   loginNonexistent,
-  loginWrongPassword
+  loginWrongPassword,
+  validToken,
+  userPartial
 };
