@@ -75,7 +75,7 @@ describe('Login test', () => {
           .post('/login')
           .send(loginNonexistent);
 
-        // expect(status).to.be.equal(UNAUTHORIZED);
+        expect(status).to.be.equal(UNAUTHORIZED);
         expect(body.message).to.be.equal('Invalid email or password');
       });
 

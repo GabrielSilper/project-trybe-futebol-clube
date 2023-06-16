@@ -5,7 +5,11 @@ import ValidateLogin from '../middleware/ValidateLogin';
 const loginRouter = Router();
 const loginController = new LoginController();
 
-loginRouter.post('/', ValidateLogin.verify, (req: Request, res: Response) =>
-  loginController.signIn(req, res));
+loginRouter.post(
+  '/',
+  ValidateLogin.verify,
+  ValidateLogin.validateFields,
+  (req: Request, res: Response) => loginController.signIn(req, res),
+);
 
 export default loginRouter;

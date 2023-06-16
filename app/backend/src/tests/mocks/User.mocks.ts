@@ -30,6 +30,7 @@ const loginWithoutEmail = {
 
 const loginEmailInvalid = {
   email: '@test.com',
+  password: 'secret_admin',
 };
 
 const loginNoLength = {
