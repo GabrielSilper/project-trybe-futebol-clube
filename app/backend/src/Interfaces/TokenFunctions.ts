@@ -1,4 +1,6 @@
-export default interface TokenFunctions<T> {
-  createToken(data: Partial<T>): string;
-  verifyToken(token: string): Partial<T>;
+import { TokenPayload } from './TokenPayload';
+
+export default interface TokenFunctions {
+  createToken(data: TokenPayload): string;
+  verifyToken(token: string): TokenPayload;
 }

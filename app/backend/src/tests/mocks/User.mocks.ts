@@ -1,5 +1,6 @@
 import IUser from '../../Interfaces/IUser';
 import Login from '../../Interfaces/Login';
+import { TokenPayload } from '../../Interfaces/TokenPayload';
 
 const user1: IUser = {
   id: 1,
@@ -9,9 +10,7 @@ const user1: IUser = {
   password: '$2a$08$xi.Hxk1czAO0nZR..B393u10aED0RQ1N3PAEXQ7HxtLjKPEZBu.PW',
 };
 
-const userPartial: Partial<IUser> = {
-  id: 1,
-  username: 'Admin',
+const userPartial: TokenPayload = {
   role: 'admin',
   email: 'admin@admin.com',
 };

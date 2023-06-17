@@ -1,19 +1,19 @@
 import * as jsonwebtoken from 'jsonwebtoken';
-import IUser from '../Interfaces/IUser';
 import TokenFunctions from '../Interfaces/TokenFunctions';
+import { TokenPayload } from '../Interfaces/TokenPayload';
 
-class TokenJwt implements TokenFunctions<IUser> {
+class TokenJwt implements TokenFunctions {
   private jwt = jsonwebtoken;
   private secret = process.env.JWT_SECRET || 'SECRET';
 
-  createToken(data: Partial<IUser>): string {
+  createToken(data: TokenPayload): string {
     const token = this.jwt.sign(data, this.secret);
     return token;
   }
 
-  verifyToken(token: string): Partial<IUser> {
-    const partialUser = this.jwt.verify(token, this.secret);
-    return partialUser as Partial<IUser>;
+  verifyToken(token: string): TokenPayload {
+    const data = this.jwt.verify(token, this.secret);
+    return data as TokenPayload;
   }
 }
 
