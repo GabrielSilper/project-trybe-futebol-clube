@@ -15,22 +15,25 @@ InferCreationAttributes<SequelizeTeam>
   declare teamName: string;
 }
 
-SequelizeTeam.init({
-  id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    primaryKey: true,
-    autoIncrement: true,
+SequelizeTeam.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    teamName: {
+      type: DataTypes.STRING(50),
+      allowNull: false,
+    },
   },
-  teamName: {
-    type: DataTypes.STRING(50),
-    allowNull: false,
+  {
+    sequelize,
+    modelName: 'teams',
+    timestamps: false,
+    underscored: true,
   },
-}, {
-  sequelize,
-  modelName: 'teams',
-  timestamps: false,
-  underscored: true,
-});
+);
 
 export default SequelizeTeam;
