@@ -12,6 +12,7 @@ chai.use(chaiHttp);
 const { expect } = chai;
 
 describe('Match test', () => {
+  afterEach(sinon.restore);
   describe('GET part from /matches', () => {
     it('returns all matches.', async () => {
       const matches = [
@@ -23,6 +24,22 @@ describe('Match test', () => {
 
       expect(status).to.be.equal(OK);
       expect(body).to.deep.equal([match1, match2]);
+    });
+
+    it('returns matches filter by progress.', async () => {
+      const matches = [
+        SequelizeMatch.build(match1),
+        SequelizeMatch.build(match2),
+      ];
+      sinon
+        .stub(SequelizeMatch, 'findAll')
+        .resolves(matches.filter((match) => match.inProgress));
+      const { status, body } = await chai
+        .request(app)
+        .get('/matches?inProgress=true');
+
+      expect(status).to.be.equal(OK);
+      expect(body).to.deep.equal([match2]);
     });
   });
 });
