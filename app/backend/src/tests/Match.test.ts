@@ -2,7 +2,7 @@ import * as sinon from 'sinon';
 import * as chai from 'chai';
 import { app } from '../app';
 import SequelizeMatch from '../database/models/SequelizeMatch';
-import { OK, UNAUTHORIZED } from '../constants/httpCodes';
+import { NOT_FOUND, OK, UNAUTHORIZED } from '../constants/httpCodes';
 
 // @ts-ignore
 import chaiHttp = require('chai-http');
@@ -24,7 +24,6 @@ describe('Match test', () => {
       sinon.stub(SequelizeMatch, 'findAll').resolves(matches);
       const { status, body } = await chai.request(app).get('/matches');
 
-     
       expect(status).to.be.equal(OK);
       expect(body).to.deep.equal([match1, match2]);
     });
@@ -34,9 +33,7 @@ describe('Match test', () => {
         SequelizeMatch.build(match1),
         SequelizeMatch.build(match2),
       ];
-      sinon
-        .stub(SequelizeMatch, 'findAll')
-        .resolves(matches);
+      sinon.stub(SequelizeMatch, 'findAll').resolves(matches);
       const { status, body } = await chai
         .request(app)
         .get('/matches?inProgress=true');
@@ -50,9 +47,7 @@ describe('Match test', () => {
         SequelizeMatch.build(match1),
         SequelizeMatch.build(match2),
       ];
-      sinon
-        .stub(SequelizeMatch, 'findAll')
-        .resolves(matches);
+      sinon.stub(SequelizeMatch, 'findAll').resolves(matches);
       const { status, body } = await chai
         .request(app)
         .get('/matches?inProgress=false');
@@ -78,7 +73,6 @@ describe('Match test', () => {
       });
 
       it('returns a error message: "Token not found".', async () => {
-        sinon.stub(SequelizeMatch, 'update').resolves([1]);
         const { status, body } = await chai
           .request(app)
           .patch('/matches/1/finish');
@@ -88,7 +82,6 @@ describe('Match test', () => {
       });
 
       it('returns a error message: "Token must be a valid token".', async () => {
-        sinon.stub(SequelizeMatch, 'update').resolves([1]);
         const { status, body } = await chai
           .request(app)
           .patch('/matches/1/finish')
@@ -110,21 +103,44 @@ describe('Match test', () => {
         const { status, body } = await chai
           .request(app)
           .patch('/matches/1')
+          .send({
+            homeTeamGoals: 5,
+            awayTeamGoals: 0,
+          })
           .set({ Authorization: validToken });
 
         expect(status).to.be.equal(OK);
-        expect(body).to.deep.equal(updatedMatch);
+        expect(body).to.deep.equal(match3Att);
       });
 
-      it('returns a error message: "Token not found".', async () => {
+      it('returns an error message: "Match not found".', async () => {
+        const jwt = new TokenJwt();
+        sinon.stub(jwt, 'verifyToken').returns(userPartial);
+        sinon.stub(SequelizeMatch, 'update').resolves([1]);
+        const updatedMatch = SequelizeMatch.build(match3Att);
+        sinon.stub(SequelizeMatch, 'findByPk').resolves(null);
+
+        const { status, body } = await chai
+          .request(app)
+          .patch('/matches/1')
+          .send({
+            homeTeamGoals: 5,
+            awayTeamGoals: 0,
+          })
+          .set({ Authorization: validToken });
+
+        expect(status).to.be.equal(NOT_FOUND);
+        expect(body.message).to.be.equal("Match not found");
+      });
+
+      it('returns an error message: "Token not found".', async () => {
         const { status, body } = await chai.request(app).patch('/matches/1');
 
         expect(status).to.be.equal(UNAUTHORIZED);
         expect(body.message).to.be.equal('Token not found');
       });
 
-      it('returns a error message: "Token must be a valid token".', async () => {
-        sinon.stub(SequelizeMatch, 'update').resolves([1]);
+      it('returns an error message: "Token must be a valid token".', async () => {
         const { status, body } = await chai
           .request(app)
           .patch('/matches/1')
