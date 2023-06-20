@@ -24,11 +24,12 @@ describe('Match test', () => {
       sinon.stub(SequelizeMatch, 'findAll').resolves(matches);
       const { status, body } = await chai.request(app).get('/matches');
 
+     
       expect(status).to.be.equal(OK);
       expect(body).to.deep.equal([match1, match2]);
     });
 
-    it('returns matches filter by progress.', async () => {
+    it('returns matches filter by progress === true.', async () => {
       const matches = [
         SequelizeMatch.build(match1),
         SequelizeMatch.build(match2),
@@ -42,6 +43,22 @@ describe('Match test', () => {
 
       expect(status).to.be.equal(OK);
       expect(body).to.deep.equal([match2]);
+    });
+
+    it('returns matches filter by progress === false.', async () => {
+      const matches = [
+        SequelizeMatch.build(match1),
+        SequelizeMatch.build(match2),
+      ];
+      sinon
+        .stub(SequelizeMatch, 'findAll')
+        .resolves(matches.filter((match) => !match.inProgress));
+      const { status, body } = await chai
+        .request(app)
+        .get('/matches?inProgress=false');
+
+      expect(status).to.be.equal(OK);
+      expect(body).to.deep.equal([match1]);
     });
   });
 

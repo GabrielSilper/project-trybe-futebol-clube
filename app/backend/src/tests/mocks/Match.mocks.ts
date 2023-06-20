@@ -5,12 +5,6 @@ const match1 = {
   awayTeamId: 8,
   awayTeamGoals: 1,
   inProgress: false,
-  homeTeam: {
-    teamName: 'São Paulo',
-  },
-  awayTeam: {
-    teamName: 'Grêmio',
-  },
 };
 
 const match2 = {
@@ -20,12 +14,6 @@ const match2 = {
   awayTeamId: 9,
   awayTeamGoals: 0,
   inProgress: true,
-  homeTeam: {
-    teamName: 'São Paulo',
-  },
-  awayTeam: {
-    teamName: 'Internacional',
-  },
 };
 
 const match3 = {
@@ -50,12 +38,6 @@ const match3Att = {
   awayTeamId: 1,
   awayTeamGoals: 0,
   inProgress: true,
-  homeTeam: {
-    teamName: 'Botafogo',
-  },
-  awayTeam: {
-    teamName: 'Flamengo',
-  },
 };
 
 export { match1, match2, match3, match3Att };

@@ -3,7 +3,7 @@ import ServiceData from './ServiceData';
 
 export interface ICRUDServiceReader<T> {
   findAll(): Promise<ServiceData<T[]>>;
-  findById(id: number): Promise<ServiceData<T>>;
+  findById?(id: number): Promise<ServiceData<T>>;
 }
 
 export interface ICRUDServiceDeleter {
