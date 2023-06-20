@@ -1,4 +1,4 @@
-import { Request, Response, Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import LoginController from '../controllers/LoginController';
 import ValidateLogin from '../middleware/ValidateLogin';
 import ValidateToken from '../middleware/ValidateToken';
@@ -8,7 +8,8 @@ const loginController = new LoginController();
 
 loginRouter.get(
   '/role',
-  ValidateToken.verify,
+  (req: Request, res: Response, next: NextFunction) => ValidateToken.verify(req, res, next),
+  (req: Request, res: Response, next: NextFunction) => ValidateToken.isValid(req, res, next),
   (req: Request, res: Response) => loginController.tokenIn(req, res),
 );
 

@@ -5,7 +5,7 @@ export type Message = { message: string };
 export type ServiceOK<T> = {
   type: null;
   status: number;
-  data: T;
+  data: T ;
 };
 
 export type ServiceError = {

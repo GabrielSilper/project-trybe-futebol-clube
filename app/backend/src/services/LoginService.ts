@@ -33,12 +33,7 @@ export default class LoginService {
   }
 
   tokenIn(token: string): ServiceData<string> {
-    try {
-      const { role } = this.tokenFunctions.verifyToken(token);
-      return { type: null, status: OK, data: role };
-    } catch (error) {
-      const message = 'Token must be a valid token';
-      return { type: 'UNAUTHORIZED', status: UNAUTHORIZED, data: { message } };
-    }
+    const { role } = this.tokenFunctions.verifyToken(token);
+    return { type: null, status: OK, data: role };
   }
 }

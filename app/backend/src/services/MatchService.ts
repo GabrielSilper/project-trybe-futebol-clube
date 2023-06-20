@@ -17,4 +17,9 @@ export default class MatchService implements ICRUDServiceReader<IMatch> {
     const data = allMatches.filter((match) => match.inProgress === inProgress);
     return { type: null, status: OK, data };
   }
+
+  public async finishMatch(id: number): Promise<ServiceData<string>> {
+    await this.matchModel.finishMatch(id);
+    return { type: null, status: OK, data: 'Finished' };
+  }
 }
