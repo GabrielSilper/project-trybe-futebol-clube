@@ -36,7 +36,7 @@ describe('Match test', () => {
       ];
       sinon
         .stub(SequelizeMatch, 'findAll')
-        .resolves(matches.filter((match) => match.inProgress));
+        .resolves(matches);
       const { status, body } = await chai
         .request(app)
         .get('/matches?inProgress=true');
@@ -52,7 +52,7 @@ describe('Match test', () => {
       ];
       sinon
         .stub(SequelizeMatch, 'findAll')
-        .resolves(matches.filter((match) => !match.inProgress));
+        .resolves(matches);
       const { status, body } = await chai
         .request(app)
         .get('/matches?inProgress=false');

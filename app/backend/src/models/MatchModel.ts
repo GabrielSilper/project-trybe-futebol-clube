@@ -25,11 +25,11 @@ export default class MatchModel implements ICRUDModelReader<IMatch> {
     return data.map(({ dataValues }) => ({ ...dataValues }));
   }
 
-  public async findById(id: number): Promise<IMatch | null> {
-    const data = await this.model.findByPk(id);
-    if (data) {
-      return { ...data.dataValues };
-    }
-    return data;
-  }
+  // public async findById(id: number): Promise<IMatch | null> {
+  //   const data = await this.model.findByPk(id);
+  //   if (data) {
+  //     return { ...data.dataValues };
+  //   }
+  //   return data;
+  // }
 }

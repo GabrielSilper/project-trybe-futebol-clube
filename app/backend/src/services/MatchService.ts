@@ -11,4 +11,10 @@ export default class MatchService implements ICRUDServiceReader<IMatch> {
     const data = await this.matchModel.findAll();
     return { type: null, status: OK, data };
   }
+
+  public async findAllFiltered(inProgress: boolean): Promise<ServiceData<IMatch[]>> {
+    const allMatches = await this.matchModel.findAll();
+    const data = allMatches.filter((match) => match.inProgress === inProgress);
+    return { type: null, status: OK, data };
+  }
 }
