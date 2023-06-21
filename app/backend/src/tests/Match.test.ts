@@ -130,7 +130,7 @@ describe('Match test', () => {
           .set({ Authorization: validToken });
 
         expect(status).to.be.equal(NOT_FOUND);
-        expect(body.message).to.be.equal("Match not found");
+        expect(body.message).to.be.equal('Match not found');
       });
 
       it('returns an error message: "Token not found".', async () => {
@@ -150,5 +150,11 @@ describe('Match test', () => {
         expect(body.message).to.be.equal('Token must be a valid token');
       });
     });
+  });
+
+  describe('PATCH part from /matches', () => {
+    it.skip('returns a created match', async () => {});
+    it.skip('returns an error message: "Token not found".', async () => {});
+    it.skip('returns an error message: "Token must be a valid token".', async () => {});
   });
 });

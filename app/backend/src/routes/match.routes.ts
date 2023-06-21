@@ -11,14 +11,12 @@ matchRouter.get('/', (req: Request, res: Response) =>
 matchRouter.patch(
   '/:id/finish',
   (req: Request, res: Response, next: NextFunction) => ValidateToken.verify(req, res, next),
-  (req: Request, res: Response, next: NextFunction) => ValidateToken.isValid(req, res, next),
   (req: Request, res: Response) => matchController.finishMatch(req, res),
 );
 
 matchRouter.patch(
   '/:id',
   (req: Request, res: Response, next: NextFunction) => ValidateToken.verify(req, res, next),
-  (req: Request, res: Response, next: NextFunction) => ValidateToken.isValid(req, res, next),
   (req: Request, res: Response) => matchController.update(req, res),
 );
 

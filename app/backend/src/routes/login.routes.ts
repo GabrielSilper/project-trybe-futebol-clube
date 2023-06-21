@@ -9,7 +9,6 @@ const loginController = new LoginController();
 loginRouter.get(
   '/role',
   (req: Request, res: Response, next: NextFunction) => ValidateToken.verify(req, res, next),
-  (req: Request, res: Response, next: NextFunction) => ValidateToken.isValid(req, res, next),
   (req: Request, res: Response) => loginController.tokenIn(req, res),
 );
 
