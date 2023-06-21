@@ -11,10 +11,7 @@ export default class LoginController {
 
   tokenIn(req: Request, res: Response) {
     const token = req.headers.authorization as string;
-    const { type, data, status } = this.loginService.tokenIn(token);
-    if (type) {
-      return res.status(status).json(data);
-    }
+    const { data, status } = this.loginService.tokenIn(token);
     return res.status(status).json({ role: data });
   }
 }

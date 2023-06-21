@@ -1,10 +1,12 @@
 import IMatch from '../Interfaces/IMatch';
-import { ICRUDModelReader } from '../Interfaces/ICRUDModel';
+import { ICRUDModelCreator, ICRUDModelReader } from '../Interfaces/ICRUDModel';
 import SequelizeTeam from '../database/models/SequelizeTeam';
 import SequelizeMatch from '../database/models/SequelizeMatch';
 import GoalsMatch from '../Interfaces/GoalsMatch';
+import { NewEntity } from '../Interfaces';
 
-export default class MatchModel implements ICRUDModelReader<IMatch> {
+export default class MatchModel
+implements ICRUDModelReader<IMatch>, ICRUDModelCreator<IMatch> {
   private model = SequelizeMatch;
 
   public async findAll(): Promise<IMatch[]> {
@@ -57,5 +59,10 @@ export default class MatchModel implements ICRUDModelReader<IMatch> {
       attributes: { exclude: ['home_team_id', 'away_team_id'] },
     });
     return match;
+  }
+
+  async create(data: NewEntity<IMatch>): Promise<IMatch> {
+    const newMatch = await this.model.create({ ...data });
+    return newMatch.dataValues;
   }
 }

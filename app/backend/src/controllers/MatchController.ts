@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import MatchService from '../services/MatchService';
+import { NewEntity } from '../Interfaces';
+import IMatch from '../Interfaces/IMatch';
 
 export default class MatchController {
   constructor(private matchService = new MatchService()) {}
@@ -24,6 +26,19 @@ export default class MatchController {
   async update(req: Request, res: Response) {
     const { id } = req.params;
     const { data, status } = await this.matchService.update(Number(id), req.body);
+    return res.status(status).json(data);
+  }
+
+  async create(req: Request, res: Response) {
+    const newMatch: NewEntity<IMatch> = {
+      awayTeamGoals: Number(req.body.awayTeamGoals),
+      homeTeamGoals: Number(req.body.homeTeamGoals),
+      awayTeamId: Number(req.body.awayTeamId),
+      homeTeamId: Number(req.body.homeTeamId),
+      inProgress: true,
+    };
+
+    const { data, status } = await this.matchService.create(newMatch);
     return res.status(status).json(data);
   }
 }

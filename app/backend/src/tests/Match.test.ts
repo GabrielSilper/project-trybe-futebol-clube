@@ -159,7 +159,7 @@ describe('Match test', () => {
     });
   });
 
-  describe('PATCH part from /matches', () => {
+  describe('POST part from /matches', () => {
     it('returns a created match', async () => {
       const jwt = new TokenJwt();
       sinon.stub(jwt, 'verifyToken').returns(userPartial);
