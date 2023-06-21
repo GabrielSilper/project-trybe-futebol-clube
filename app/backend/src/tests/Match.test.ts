@@ -2,11 +2,18 @@ import * as sinon from 'sinon';
 import * as chai from 'chai';
 import { app } from '../app';
 import SequelizeMatch from '../database/models/SequelizeMatch';
-import { NOT_FOUND, OK, UNAUTHORIZED } from '../constants/httpCodes';
+import { CREATED, NOT_FOUND, OK, UNAUTHORIZED, UNPROCESSABLE_ENTITY } from '../constants/httpCodes';
 
 // @ts-ignore
 import chaiHttp = require('chai-http');
-import { match1, match2, match3Att } from './mocks/Match.mocks';
+import {
+  match1,
+  match2,
+  match3Att,
+  newMatch,
+  reqCreateMatch,
+  reqWrongCreateMatch,
+} from './mocks/Match.mocks';
 import { userPartial, validToken } from './mocks/User.mocks';
 import TokenJwt from '../utils/TokenJwt';
 chai.use(chaiHttp);
@@ -153,8 +160,70 @@ describe('Match test', () => {
   });
 
   describe('PATCH part from /matches', () => {
-    it.skip('returns a created match', async () => {});
-    it.skip('returns an error message: "Token not found".', async () => {});
-    it.skip('returns an error message: "Token must be a valid token".', async () => {});
+    it('returns a created match', async () => {
+      const jwt = new TokenJwt();
+      sinon.stub(jwt, 'verifyToken').returns(userPartial);
+
+      const createdMatch = SequelizeMatch.build(newMatch);
+      sinon.stub(SequelizeMatch, 'create').resolves(createdMatch);
+
+      const { status, body } = await chai
+        .request(app)
+        .post('/matches')
+        .send(reqCreateMatch)
+        .set({ Authorization: validToken });
+
+      expect(status).to.be.equal(CREATED);
+      expect(body).to.deep.equal(newMatch);
+    });
+    it('returns an error message: "Token not found".', async () => {
+      const { status, body } = await chai
+        .request(app)
+        .post('/matches')
+        .send(reqCreateMatch);
+
+      expect(status).to.be.equal(UNAUTHORIZED);
+      expect(body.message).to.be.equal('Token not found');
+    });
+    it('returns an error message: "Token must be a valid token".', async () => {
+      const { status, body } = await chai
+        .request(app)
+        .post('/matches')
+        .send(reqCreateMatch)
+        .set({ Authorization: 'invalid' });
+
+      expect(status).to.be.equal(UNAUTHORIZED);
+      expect(body.message).to.be.equal('Token must be a valid token');
+    });
+    it('returns an error message: "It is not possible to create a match with two equal teams".', async () => {
+      const jwt = new TokenJwt();
+      sinon.stub(jwt, 'verifyToken').returns(userPartial);
+      
+      const { status, body } = await chai
+        .request(app)
+        .post('/matches')
+        .send(reqWrongCreateMatch)
+        .set({ Authorization: validToken });
+
+      expect(status).to.be.equal(UNPROCESSABLE_ENTITY);
+      expect(body.message).to.be.equal(
+        'It is not possible to create a match with two equal teams'
+      );
+    });
+    it('returns an error message: "There is no team with such id!".', async () => {
+      const jwt = new TokenJwt();
+      sinon.stub(jwt, 'verifyToken').returns(userPartial);
+      
+      sinon.stub(SequelizeMatch, 'findByPk').resolves(null);
+
+      const { status, body } = await chai
+        .request(app)
+        .post('/matches')
+        .send(reqCreateMatch)
+        .set({ Authorization: validToken });
+
+      expect(status).to.be.equal(NOT_FOUND);
+      expect(body.message).to.be.equal('There is no team with such id!');
+    });
   });
 });

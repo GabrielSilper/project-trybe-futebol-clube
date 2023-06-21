@@ -1,3 +1,5 @@
+import IMatch from '../../Interfaces/IMatch';
+
 const match1 = {
   id: 1,
   homeTeamId: 16,
@@ -40,4 +42,34 @@ const match3Att = {
   inProgress: true,
 };
 
-export { match1, match2, match3, match3Att };
+const newMatch: IMatch = {
+  id: 50,
+  homeTeamId: 16, // O valor deve ser o id do time
+  awayTeamId: 8, // O valor deve ser o id do time
+  homeTeamGoals: 2,
+  awayTeamGoals: 2,
+  inProgress: true,
+};
+
+const reqCreateMatch = {
+  homeTeamId: 16, // O valor deve ser o id do time
+  awayTeamId: 8, // O valor deve ser o id do time
+  homeTeamGoals: 2,
+  awayTeamGoals: 2,
+};
+
+const reqWrongCreateMatch = {
+  homeTeamId: 8, // O valor deve ser o id do time
+  awayTeamId: 8, // O valor deve ser o id do time
+  homeTeamGoals: 2,
+  awayTeamGoals: 2,
+};
+
+const reqWrongId = {
+  homeTeamId: 1910, // O valor deve ser o id do time
+  awayTeamId: 8, // O valor deve ser o id do time
+  homeTeamGoals: 2,
+  awayTeamGoals: 2,
+};
+
+export { match1, match2, match3, match3Att, reqCreateMatch, newMatch, reqWrongCreateMatch, reqWrongId };

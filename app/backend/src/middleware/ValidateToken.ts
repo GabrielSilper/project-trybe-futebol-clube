@@ -22,17 +22,4 @@ export default class ValidateToken {
 
     next();
   }
-
-  // static isValid(req: Request, res: Response, next: NextFunction) {
-  //   const token = req.headers.authorization;
-  //   if (token) {
-  //     try {
-  //       this.tokenFunctions.verifyToken(token);
-  //     } catch (error) {
-  //       const message = 'Token must be a valid token';
-  //       return res.status(UNAUTHORIZED).json({ message });
-  //     }
-  //   }
-  //   next();
-  // }
 }
