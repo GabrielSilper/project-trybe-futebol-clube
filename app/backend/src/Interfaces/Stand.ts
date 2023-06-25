@@ -7,9 +7,9 @@ export interface IStand {
   totalLosses: number,
   goalsFavor: number,
   goalsOwn: number,
+  goalsBalance: number,
 }
 
 export interface IStandEfficiency extends IStand {
-  goalsBalance: number,
   efficiency: string,
 }
