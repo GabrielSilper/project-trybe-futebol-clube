@@ -15,4 +15,9 @@ export default class LeaderboardService {
     const standings = await this.leaderboardModel.awayValues();
     return { type: null, status: OK, data: standings };
   }
+
+  public async leaderboard(): Promise<ServiceData<IStandEfficiency[]>> {
+    const standings = await this.leaderboardModel.leaderboard();
+    return { type: null, status: OK, data: standings };
+  }
 }

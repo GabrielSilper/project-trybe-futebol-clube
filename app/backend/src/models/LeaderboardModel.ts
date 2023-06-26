@@ -1,48 +1,43 @@
 import SequelizeLeaderboard from '../database/models/SequelizeLeaderboard';
 import theSequelize from '../database/models';
-import { leaderboardAway2, leaderboardHome2 } from '../constants/queries';
-import { IStand, IStandEfficiency } from '../Interfaces/Stand';
+import { leaderboardAway, leaderboardHome } from '../constants/queries';
+import { IStandEfficiency } from '../Interfaces/Stand';
+import LeaderboardFunctions from '../utils/LeaderboardFunctions';
 
 export default class LeaderboardModel {
   private sequelize = theSequelize;
 
-  private static mapTypes(leaderboard: SequelizeLeaderboard[]): IStandEfficiency[] {
-    const standings = leaderboard.map(
-      (stand): IStandEfficiency => ({
-        ...stand.dataValues,
-        totalPoints: Number(stand.totalPoints),
-        totalVictories: Number(stand.totalVictories),
-        totalDraws: Number(stand.totalDraws),
-        totalLosses: Number(stand.totalLosses),
-        goalsFavor: Number(stand.goalsFavor),
-        goalsOwn: Number(stand.goalsOwn),
-        goalsBalance: Number(stand.goalsBalance),
-        efficiency: LeaderboardModel.getEfficiency(stand).toFixed(2),
-      }),
-    );
-    return standings;
-  }
-
-  private static getEfficiency(stand: IStand) {
-    const { totalPoints, totalGames } = stand;
-    return (totalPoints / (totalGames * 3)) * 100;
-  }
-
   public async homeValues(): Promise<IStandEfficiency[]> {
-    const results = await this.sequelize.query(leaderboardHome2, {
+    const results = await this.sequelize.query(leaderboardHome, {
       model: SequelizeLeaderboard,
       mapToModel: true,
     });
-    const standings = LeaderboardModel.mapTypes(results);
+    const standings = LeaderboardFunctions.mapTypes(results);
     return standings;
   }
 
   public async awayValues(): Promise<IStandEfficiency[]> {
-    const results = await this.sequelize.query(leaderboardAway2, {
+    const results = await this.sequelize.query(leaderboardAway, {
       model: SequelizeLeaderboard,
       mapToModel: true,
     });
-    const standings = LeaderboardModel.mapTypes(results);
+    const standings = LeaderboardFunctions.mapTypes(results);
     return standings;
+  }
+
+  public async leaderboard(): Promise<IStandEfficiency[]> {
+    const homeResults = await this.sequelize.query(leaderboardHome, {
+      model: SequelizeLeaderboard,
+      mapToModel: true,
+    });
+    const awayResults = await this.sequelize.query(leaderboardAway, {
+      model: SequelizeLeaderboard,
+      mapToModel: true,
+    });
+    const home = LeaderboardFunctions.mapTypes(homeResults);
+    const away = LeaderboardFunctions.mapTypes(awayResults);
+    const sumResult = LeaderboardFunctions.sumLeaderboards(home, away);
+    LeaderboardFunctions.sortLeaderboard(sumResult);
+    return sumResult;
   }
 }
